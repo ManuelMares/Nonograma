@@ -1,0 +1,74 @@
+﻿@page "/"
+@using Nonograma.Data;
+@using System.Collections.Generic;
+@using System.Linq;
+
+<section class="tablero">
+    <button @onclick="ComenzarJuego"> Maquina </button> <hr />
+    @if (bandera == true)
+    {
+        <section class="juego">
+            @for (int i = 0; i < 5; i++)
+            {
+                int contadorI = i;
+                for (int j = 0; j < 5; j++)
+                {
+                    int contadorJ = j;
+                    tablero.MatrizTablero[contadorI, contadorJ] = new ElementoTablero("CuadroSinMarcar", false, false);
+                    valor = contadorI + "/" + contadorJ;
+                    tablero.MatrizTablero[contadorI, contadorJ].Numero = valor;
+                    <button @onclick="@( e=> SeleccionarCasilla(e, contadorI, contadorJ) )"
+                            class="@(tablero.MatrizTablero[contadorI, contadorJ].Fondo)">@valor</button>
+                }
+
+            }
+        </section>
+        <button @onclick="EnviarNonograma"> Maquina </button> <hr />
+
+    }
+</section>
+
+
+@code{
+    bool bandera = false;
+    bool prueba = false;
+    int fila = 0;
+    int columna = 0;
+    bool deshabilitar = true;
+    string valor = "";
+
+
+    public Tablero tablero = new Tablero();
+    ControladorNonograma Nonograma = new ControladorNonograma();
+
+    private void ComenzarJuego()
+    {
+        bandera = true;
+    }
+
+    private void CargarNonograma()
+    {
+    }
+
+    private void SeleccionarCasilla(MouseEventArgs e, int i, int j)
+    {
+        prueba = true;
+        fila = i;
+        columna = j;
+        tablero.MatrizTablero[fila, columna].Marcado = true;
+        tablero.MatrizTablero[fila, columna].Fondo = "CuadroMarcado";
+        tablero.MatrizTablero[fila, columna].Numero = "Marcado";
+        Console.WriteLine($"Marcado {tablero.MatrizTablero[fila, columna].Marcado} ");
+        Console.WriteLine($"Fondo {tablero.MatrizTablero[fila, columna].Fondo} ");
+        Console.WriteLine($"Numero {tablero.MatrizTablero[fila, columna].Numero} ");
+
+        //tablero.MarcarDesmarcarElemento(fila, columna);
+    }
+
+    private void EnviarNonograma()
+    {
+        //CreadorNonograma NonogramaCreado = new CreadorNonograma(tablero.MatrizTablero, Nonograma);
+    }
+
+
+}
